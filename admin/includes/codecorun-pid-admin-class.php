@@ -18,6 +18,7 @@ class codecorun_pid_admin_class
         add_filter( 'manage_plugins_columns', [$this, 'column_header'] );
         add_action( 'manage_plugins_custom_column', [$this, 'column_value'], 10, 2 );
         add_action( 'activated_plugin', [$this,'reg_activated_plugin'], 10, 2 );
+        add_action( 'deactivated_plugin', [$this,'reg_deactivated_plugin'], 10, 2 );
         
     }
 
@@ -33,6 +34,7 @@ class codecorun_pid_admin_class
     public function column_header( $columns ) {
         $columns['codecorun_pid_date_installed'] = __('Date Installed', 'codecorun-plugin-installation-details');
         $columns['codecorun_pid_date_reactivated'] = __('Date Reactivated', 'codecorun-plugin-installation-details');
+        $columns['codecorun_pid_date_deactivated'] = __('Date Deactivated', 'codecorun-plugin-installation-details');
         $columns['codecorun_pid_author'] = __('Author', 'codecorun-plugin-installation-details');
         return $columns;
     }
@@ -49,14 +51,18 @@ class codecorun_pid_admin_class
      * 
      */
     public function column_value( $column_name, $plugin_file ) {
+        
         $pids = get_option( 'codecorun_pid_details' );
+
+        $date_format = get_option('date_format');
+        $time_format = get_option('time_format');
+  
+
         if ( 'codecorun_pid_date_installed' === $column_name ) {
 
             if( $pids ){
                 foreach( $pids as $pid ){
                     if( $pid[ 'plugin_name' ] == $plugin_file ){
-                        $date_format = get_option('date_format');
-                        $time_format = get_option('time_format');
                         echo date( $date_format, strtotime($pid[ 'plugin_installation_date' ]) ) .' - '. date( $time_format, strtotime($pid[ 'plugin_installation_date' ]) );
                     }
                 }
@@ -80,17 +86,25 @@ class codecorun_pid_admin_class
             if( $pids ){
                 foreach( $pids as $pid ){
                     if( $pid[ 'plugin_name' ] == $plugin_file ){
-
                         if( isset($pid[ 'plugin_reactivated_date' ]) ){
-                            $date_format = get_option('date_format');
-                            $time_format = get_option('time_format');
                             echo date( $date_format, strtotime($pid[ 'plugin_reactivated_date' ]) ) .' - '. date( $time_format, strtotime($pid[ 'plugin_reactivated_date' ]) );
                         }
-                        
                     }
                 }
             }
             
+        }
+
+        if( 'codecorun_pid_date_deactivated' == $column_name ){
+            if( $pids ){
+                foreach( $pids as $pid ){
+                    if( $pid[ 'plugin_name' ] == $plugin_file ){
+                        if( isset($pid[ 'plugin_deactivated_date' ]) ){
+                            echo date( $date_format, strtotime($pid[ 'plugin_deactivated_date' ]) ) .' - '. date( $time_format, strtotime($pid[ 'plugin_deactivated_date' ]) );
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -107,6 +121,22 @@ class codecorun_pid_admin_class
     public function reg_activated_plugin( $plugin, $network_activation ) {
         // do stuff
         codecorun_pid_register_plugin( $plugin );
+    }
+
+    /**
+     * 
+     * reg_deactivated_plugin
+     * @since 1.0.0
+     * @param string
+     * @param unknown
+     * @return
+     * 
+     * 
+     */
+
+    public function reg_deactivated_plugin( $plugin, $network_activation )
+    {
+        codecorun_pid_register_plugin( $plugin, 'deactivate' );
     }
 }
 ?>

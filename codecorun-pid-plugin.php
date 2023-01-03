@@ -58,7 +58,7 @@ function codecorun_pdi_init(){
 
 if( !function_exists('codecorun_pid_register_plugin') ){
 
-    function  codecorun_pid_register_plugin( $plugin = null )
+    function  codecorun_pid_register_plugin( $plugin = null, $type = 'activate' )
     {
 
         if( !$plugin )
@@ -75,12 +75,20 @@ if( !function_exists('codecorun_pid_register_plugin') ){
             'author' => get_current_user_id()
         ];
 
+        if( $type == 'deactivate' ){
+            $data[ 'plugin_deactivated_date' ] = current_datetime()->format('Y-m-d H:i:s');
+        }
+
         if( $code_pid ){
             
             foreach( $code_pid as $index => $pid ){
                 if( $pid[ 'plugin_name' ] == $plugin){
                     $it_has = true;
-                    $pid[ 'plugin_reactivated_date' ] = current_datetime()->format('Y-m-d H:i:s');
+                    if( $type == 'deactivate' ){
+                        $pid[ 'plugin_deactivated_date' ] = current_datetime()->format('Y-m-d H:i:s');
+                    }else{
+                        $pid[ 'plugin_reactivated_date' ] = current_datetime()->format('Y-m-d H:i:s');
+                    }
                     $pid[ 'author' ] = get_current_user_id();
                     $code_pid[ $index ] = $pid;
                     break;
