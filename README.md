@@ -8,13 +8,13 @@ Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A simple plugin that will display other information in your installed plugins.
+A simple plugin that will display other information of your installed plugins.
 
 ### Description
 As a website owner or developer we sometimes came to a situation where we have some plugin conflicts and requires troubleshooting. By displaying other information such installation date, last date deactivated and last date reactivated we can see which plugin likely causes the issue. 
 
 ### When the plugin is best to use?
-When troubleshooting an issue and see which is the lastest plugin was installed and likely causing the issue.
+When troubleshooting an issue and see which is the lastest plugin was installed and likely causing the problem.
 
 ### How does it work?
 In every plugin installation this plugin will save the date, and author who installed the plugin. Display those information for troubleshooting reference.
