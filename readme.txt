@@ -1,4 +1,4 @@
-=== Codecorun - Plugin Installation Details ===
+=== Codecorun - Other Installation Details ===
 Contributors: codecorun
 Tags: Plugins, Details, Information
 Requires at least: 4.7
