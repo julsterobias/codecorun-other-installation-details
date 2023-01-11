@@ -75,7 +75,7 @@ class codecorun_oid_admin_class
                     if( $oid[ 'plugin_name' ] == $plugin_file ){
                         $author = $oid[ 'author' ];
                         $user = get_userdata( $author );
-                        echo '<a href="user-edit.php?user_id='.$author.'" target="_blank">'.$user->user_login.'</a>';
+                        echo '<a href="user-edit.php?user_id='.esc_attr( $author ).'" target="_blank">'.esc_html( $user->user_login ).'</a>';
                     }
                 }
             }
